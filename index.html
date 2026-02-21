@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GRX | Tactical Link Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <meta property="og:title" content="GOWRAX | Tactical Link Hub">
+    <meta property="og:description" content="Accès centralisé aux réseaux de l'unité GOWRAX.">
+    <meta property="og:image" content="/icons/logo-team-esport.png">
+    <meta name="theme-color" content="#D62F7F">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Rock+Salt&display=swap" rel="stylesheet">
+    <style>
+        :root { --abyss: #0B0C15; --magenta: #D62F7F; --gold: #D4AF37; }
+        body { background: var(--abyss); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; cursor: crosshair; }
+        
+        canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
+
+        .holo-circle {
+            width: 75px; height: 75px;
+            border: 1px solid var(--magenta);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            background: rgba(214, 47, 127, 0.1);
+            box-shadow: 0 0 15px rgba(214, 47, 127, 0.2);
+            position: relative; overflow: hidden;
+        }
+        .holo-circle:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 0 25px var(--magenta); }
+        .holo-circle img { width: 100%; height: 100%; object-fit: cover; }
+
+        /* Bannière de Recrutement : Correction du texte chevauchant */
+        .recruitment-banner {
+            background: rgba(214, 47, 127, 0.05);
+            border: 1px solid rgba(214, 47, 127, 0.3);
+            padding: 12px; 
+            width: 100%; 
+            max-width: 400px;
+            text-align: center; 
+            position: relative;
+            overflow: hidden; 
+            margin-bottom: 2rem;
+            backdrop-blur: 5px;
+            animation: text-flicker 3s linear infinite;
+        }
+
+        /* Le faisceau de scan (on retire le "content" texte pour ne laisser que la lumière) */
+        .recruitment-banner::before {
+            content: ""; 
+            position: absolute; 
+            top: 0; 
+            left: -150%;
+            width: 50%; 
+            height: 100%;
+            /* Un faisceau plus fin et plus technologique */
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(214, 47, 127, 0.2) 45%, 
+                rgba(214, 47, 127, 0.6) 50%, 
+                rgba(214, 47, 127, 0.2) 55%, 
+                transparent 100%);
+            animation: scan-banner 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        @keyframes scan-banner { 
+            0% { left: -150%; }
+            30% { left: 150%; } /* Le scan passe vite, puis attend un peu */
+            100% { left: 150%; }
+        }
+        @keyframes text-flicker {
+            0%, 100% { opacity: 1; }
+            31% { opacity: 1; }
+            32% { opacity: 0.8; }
+            33% { opacity: 1; }
+            98% { opacity: 1; }
+            99% { opacity: 0.5; }
+        }
+        .btn-link {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid var(--magenta);
+            padding: 14px 20px; transition: 0.3s;
+            display: flex; align-items: center; justify-content: space-between;
+            backdrop-blur: 5px;
+        }
+        .btn-link:hover { border-left-color: var(--gold); background: rgba(212, 175, 55, 0.08); transform: translateX(5px); }
+
+        .live-active { border: 1px solid #ff0000 !important; background: rgba(255, 0, 0, 0.1) !important; }
+        
+        #custom-cursor { width: 20px; height: 20px; border: 1px solid var(--magenta); position: fixed; pointer-events: none; z-index: 999; border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.08s ease-out; }
+    </style>
+</head>
+<body>
+
+    <div id="custom-cursor" class="hidden md:block"></div>
+    <canvas id="starCanvas"></canvas>
+
+    <div class="relative z-10 flex flex-col items-center py-12 px-6 min-h-screen">
+        
+        <div class="text-center mb-8">
+            <div class="w-28 h-28 mx-auto mb-4 relative flex items-center justify-center">
+                <img src="/icons/logo-team-esport.png" alt="GRX" class="w-full h-full object-contain filter drop-shadow-[0_0_15px_rgba(212,175,55,0.5)]" onerror="this.src='https://dummyimage.com/200x200/0b0c15/d4af37.png&text=GRX'">
+            </div>
+            <h1 class="text-[10px] tracking-[0.8em] text-magenta uppercase font-bold">Team Gowrax (GRX)</h1>
+        </div>
+
+        <div class="recruitment-banner">
+            <p class="tech-font text-[10px] text-white tracking-widest uppercase mb-1">Alerte // Recrutement_Actif</p>
+            <p class="accent-font text-[12px] text-magenta">Tous les rosters recherchent du sang neuf. Rejoins-nous !</p>
+        </div>
+
+        <div class="flex gap-6 mb-12">
+            <a href="https://twitch.tv/ptitegow" target="_blank" class="flex flex-col items-center gap-2 group">
+                <div class="holo-circle">
+                    <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/4ead3e38-37d4-4ead-8e56-3ce235d7f6b0-profile_image-70x70.png" alt="Ptitegow">
+                </div>
+                <span class="tech-font text-[9px] text-magenta uppercase tracking-widest">Ptitegow</span>
+            </a>
+            <a href="https://twitch.tv/crazzynel" target="_blank" class="flex flex-col items-center gap-2 group">
+                <div class="holo-circle">
+                    <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/06f74954-7154-4541-91c2-2df23c3be26e-profile_image-70x70.png" alt="Crazzynel">
+                </div>
+                <span class="tech-font text-[9px] text-magenta uppercase tracking-widest font-bold">Crazzynel</span>
+            </a>
+            <a href="https://twitch.tv/filouxx_" target="_blank" class="flex flex-col items-center gap-2 group">
+                <div class="holo-circle">
+                    <img src="https://cdn.discordapp.com/attachments/1458240905503969303/1474747728842981418/sung_jin_woo_7220.webp?ex=699af95a&is=6999a7da&hm=18e6dddcfc6e26a697eb0641c3b3bfd8f2e6ac7287f8e63b4e56f4f389caa932&" alt="Filouxx">
+                </div>
+                <span class="tech-font text-[9px] text-magenta uppercase tracking-widest">Filouxx</span>
+            </a>
+        </div>
+
+        <div class="w-full max-w-xs space-y-3">
+            <a href="https://www.twitch.tv/team_gowrax" target="_blank" id="team-live-btn" class="btn-link group">
+                <span class="flex items-center">
+                    <div id="live-dot" class="live-dot bg-gray-600"></div>
+                    <span class="tech-font text-[11px] uppercase tracking-wider">Stream_Gowrax</span>
+                </span>
+                <span id="live-status-text" class="text-[8px] opacity-40 tech-font">OFFLINE</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@team_gowrax" target="_blank" class="btn-link">
+                <span class="tech-font text-[11px] uppercase tracking-wider">TikTok_Archives</span>
+                <span class="text-[8px] opacity-40 tech-font">DATA</span>
+            </a>
+            <a href="https://www.instagram.com/team_gowrax" target="_blank" class="btn-link">
+                <span class="tech-font text-[11px] uppercase tracking-wider">Insta_Feed</span>
+                <span class="text-[8px] opacity-40 tech-font">SOCIAL</span>
+            </a>
+            <a href="https://discord.gg/rTF6hpthvK" target="_blank" class="btn-link border-gold bg-gold/5 mt-6">
+                <span class="tech-font text-[11px] uppercase text-gold font-bold tracking-widest">Base_Discord</span>
+                <span class="text-gold text-[8px] animate-pulse">HQ</span>
+            </a>
+        </div>
+
+        <footer class="mt-auto pt-12 opacity-30 text-center">
+            <p class="tech-font text-[8px] tracking-[0.4em] uppercase">Gowrax E-Sport // DESIGNED WITH ❤️ by Crazzynel // 2026</p>
+        </footer>
+    </div>
+
+    <script>
+        // CURSEUR
+        const cursor = document.getElementById('custom-cursor');
+        window.addEventListener('mousemove', e => { cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px'; });
+
+        // CANVAS PLUIE D'ÉTOILES (Orientée vers le BAS-GAUCHE)
+        const canvas = document.getElementById('starCanvas');
+        const ctx = canvas.getContext('2d');
+        let stars = []; let shootingStars = [];
+        
+        function initStars() {
+            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+            stars = []; for(let i=0; i<60; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.5, op:Math.random()});
+        }
+
+        function createShootingStar() {
+            shootingStars.push({
+                x: Math.random() * (canvas.width + 200),
+                y: -50,
+                speed: Math.random() * 8 + 4,
+                len: Math.random() * 100 + 50,
+                op: 1
+            });
+        }
+
+        function animate() {
+            ctx.clearRect(0,0,canvas.width, canvas.height); 
+            ctx.fillStyle = "#fff";
+            stars.forEach(s => { ctx.globalAlpha = s.op; ctx.fillRect(s.x, s.y, s.s, s.s); });
+            shootingStars.forEach((ss, i) => {
+                ctx.strokeStyle = `rgba(214, 47, 127, ${ss.op})`; 
+                ctx.lineWidth = 1.5; ctx.beginPath();
+                ctx.moveTo(ss.x, ss.y);
+                ctx.lineTo(ss.x + ss.len, ss.y - ss.len);
+                ctx.stroke();
+                ss.x -= ss.speed; ss.y += ss.speed; ss.op -= 0.015;
+                if(ss.op <= 0) shootingStars.splice(i, 1);
+            });
+            if(Math.random() < 0.04) createShootingStar();
+            requestAnimationFrame(animate);
+        }
+
+        // --- SIMULATION API LIVE (REMPLACER PAR UN VRAI CHECK API SI BESOIN) ---
+        function checkLiveStatus() {
+            const isLive = false; // Pour le test, on met TRUE. En prod, il faut un fetch()
+            const btn = document.getElementById('team-live-btn');
+            const dot = document.getElementById('live-dot');
+            const text = document.getElementById('live-status-text');
+
+            if(isLive) {
+                btn.classList.add('live-active');
+                dot.classList.add('is-live');
+                text.innerText = "SYSTEM_LIVE";
+                text.classList.add('text-red-500', 'opacity-100');
+            }
+        }
+
+        window.addEventListener('resize', initStars);
+        initStars(); animate(); checkLiveStatus();
+    </script>
+</body>
+</html>
