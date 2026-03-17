@@ -12,8 +12,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Share+Tech+Mono&family=Rock+Salt&display=swap" rel="stylesheet">
     <style>
         :root { --abyss: #0B0C15; --magenta: #D62F7F; --gold: #D4AF37; }
-        body { background: var(--abyss); color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; cursor: crosshair; }
-        
+        body {
+            background: radial-gradient(1200px 600px at 10% 10%, rgba(214,47,127,0.06), transparent 10%),
+                        radial-gradient(900px 400px at 90% 90%, rgba(212,175,55,0.03), transparent 10%),
+                        var(--abyss);
+            color: #fff; font-family: 'Rajdhani', sans-serif; overflow-x: hidden; cursor: crosshair;
+            -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+        }
+
         canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; }
 
         .holo-circle {
@@ -21,72 +27,63 @@
             border: 1px solid var(--magenta);
             border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            transition: 0.5s cubic-bezier(0.19, 1, 0.22, 1);
-            background: rgba(214, 47, 127, 0.1);
-            box-shadow: 0 0 15px rgba(214, 47, 127, 0.2);
+            transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), box-shadow 0.2s;
+            background: linear-gradient(180deg, rgba(214,47,127,0.06), rgba(0,0,0,0.04));
+            box-shadow: 0 4px 18px rgba(0,0,0,0.6), 0 0 12px rgba(214,47,127,0.12);
             position: relative; overflow: hidden;
         }
-        .holo-circle:hover { transform: scale(1.1) translateY(-5px); box-shadow: 0 0 25px var(--magenta); }
+        .holo-circle:hover { transform: scale(1.06) translateY(-4px); box-shadow: 0 8px 28px rgba(214,47,127,0.22); }
         .holo-circle img { width: 100%; height: 100%; object-fit: cover; }
 
-        /* Bannière de Recrutement : Correction du texte chevauchant */
+        /* Bannière de Recrutement */
         .recruitment-banner {
-            background: rgba(214, 47, 127, 0.05);
-            border: 1px solid rgba(214, 47, 127, 0.3);
-            padding: 12px; 
-            width: 100%; 
-            max-width: 400px;
-            text-align: center; 
-            position: relative;
-            overflow: hidden; 
-            margin-bottom: 2rem;
-            backdrop-blur: 5px;
-            animation: text-flicker 3s linear infinite;
+            background: linear-gradient(180deg, rgba(214,47,127,0.04), rgba(214,47,127,0.02));
+            border: 1px solid rgba(214, 47, 127, 0.18);
+            padding: 10px 14px;
+            width: 100%; max-width: 420px;
+            text-align: center; position: relative; overflow: hidden; margin-bottom: 1.5rem;
+            -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); border-radius: 10px;
         }
 
-        /* Le faisceau de scan (on retire le "content" texte pour ne laisser que la lumière) */
         .recruitment-banner::before {
-            content: ""; 
-            position: absolute; 
-            top: 0; 
-            left: -150%;
-            width: 50%; 
-            height: 100%;
-            /* Un faisceau plus fin et plus technologique */
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                rgba(214, 47, 127, 0.2) 45%, 
-                rgba(214, 47, 127, 0.6) 50%, 
-                rgba(214, 47, 127, 0.2) 55%, 
-                transparent 100%);
-            animation: scan-banner 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            content: ""; position: absolute; top: 0; left: -150%; width: 45%; height: 100%;
+            background: linear-gradient(90deg, transparent 0%, rgba(214,47,127,0.12) 45%, rgba(214,47,127,0.5) 50%, rgba(214,47,127,0.12) 55%, transparent 100%);
+            animation: scan-banner 3.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
         }
 
-        @keyframes scan-banner { 
-            0% { left: -150%; }
-            30% { left: 150%; } /* Le scan passe vite, puis attend un peu */
-            100% { left: 150%; }
-        }
-        @keyframes text-flicker {
-            0%, 100% { opacity: 1; }
-            31% { opacity: 1; }
-            32% { opacity: 0.8; }
-            33% { opacity: 1; }
-            98% { opacity: 1; }
-            99% { opacity: 0.5; }
-        }
+        @keyframes scan-banner { 0% { left: -150%; } 35% { left: 150%; } 100% { left: 150%; } }
+        @keyframes text-flicker { 0%,100%{opacity:1} 32%{opacity:0.85} 33%{opacity:1} 99%{opacity:0.7} }
+
         .btn-link {
             background: rgba(255, 255, 255, 0.03);
             border-left: 2px solid var(--magenta);
-            padding: 14px 20px; transition: 0.3s;
+            padding: 12px 16px; transition: 0.28s;
             display: flex; align-items: center; justify-content: space-between;
-            backdrop-blur: 5px;
+            -webkit-backdrop-filter: blur(4px); backdrop-filter: blur(4px); border-radius: 12px; gap:10px;
         }
-        .btn-link:hover { border-left-color: var(--gold); background: rgba(212, 175, 55, 0.08); transform: translateX(5px); }
+        .btn-link:hover { border-left-color: var(--gold); background: rgba(212, 175, 55, 0.06); transform: translateX(4px); }
 
-        .live-active { border: 1px solid #ff0000 !important; background: rgba(255, 0, 0, 0.1) !important; }
-        
+        .live-active { border: 1px solid #ff0000 !important; background: rgba(255, 0, 0, 0.06) !important; }
+
+        /* point live */
+        .live-dot { width: 10px; height: 10px; border-radius: 50%; background: #6b7280; display:inline-block; margin-right:8px; box-shadow: 0 0 8px rgba(214,47,127,0.15); }
+        .live-dot.is-live { background: #ff3b30; box-shadow: 0 0 10px rgba(255,59,48,0.6); }
+
         #custom-cursor { width: 20px; height: 20px; border: 1px solid var(--magenta); position: fixed; pointer-events: none; z-index: 999; border-radius: 50%; transform: translate(-50%, -50%); transition: transform 0.08s ease-out; }
+
+        /* Responsive tweaks: mobile vs desktop */
+        @media (max-width: 640px) {
+            .holo-circle { width: 60px; height: 60px; }
+            .btn-link { padding: 10px 12px; border-radius: 10px; }
+            .recruitment-banner { max-width: 95%; padding: 10px; }
+            /* streamer list horizontal scroll on mobile */
+            .streamer-row { display: flex; gap: 12px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+            #custom-cursor { display: none; }
+        }
+        @media (min-width: 1024px) {
+            .holo-circle { width: 96px; height: 96px; }
+            .recruitment-banner { max-width: 520px; }
+        }
     </style>
 </head>
 <body>
@@ -108,7 +105,7 @@
             <p class="accent-font text-[12px] text-magenta">Tous les rosters recherchent du sang neuf. Rejoins-nous sur Discord!</p>
         </div>
 
-        <div class="flex gap-6 mb-12">
+    <div class="streamer-row flex gap-6 mb-12">
             <a href="https://twitch.tv/ptitegow" target="_blank" class="flex flex-col items-center gap-2 group">
                 <div class="holo-circle">
                     <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/4ead3e38-37d4-4ead-8e56-3ce235d7f6b0-profile_image-70x70.png" alt="Ptitegow">
@@ -121,12 +118,7 @@
                 </div>
                 <span class="tech-font text-[9px] text-magenta uppercase tracking-widest font-bold">Crazzynel</span>
             </a>
-            <a href="https://twitch.tv/filouxx_" target="_blank" class="flex flex-col items-center gap-2 group">
-                <div class="holo-circle">
-                    <img src="https://cdn.discordapp.com/attachments/1458240905503969303/1474747728842981418/sung_jin_woo_7220.webp?ex=699af95a&is=6999a7da&hm=18e6dddcfc6e26a697eb0641c3b3bfd8f2e6ac7287f8e63b4e56f4f389caa932&" alt="Filouxx">
-                </div>
-                <span class="tech-font text-[9px] text-magenta uppercase tracking-widest">Filouxx</span>
-            </a>
+            <!-- Filouxx retiré — carte supprimée -->
         </div>
 
         <div class="w-full max-w-xs space-y-3">
@@ -169,7 +161,8 @@
         
         function initStars() {
             canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            stars = []; for(let i=0; i<60; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.5, op:Math.random()});
+            const count = (canvas.width < 640) ? 30 : 80;
+            stars = []; for(let i=0; i<count; i++) stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, s:Math.random()*1.6, op:Math.random()});
         }
 
         function createShootingStar() {
@@ -177,7 +170,7 @@
                 x: Math.random() * (canvas.width + 200),
                 y: -50,
                 speed: Math.random() * 8 + 4,
-                len: Math.random() * 100 + 50,
+                len: Math.random() * 90 + 40,
                 op: 1
             });
         }
@@ -185,6 +178,7 @@
         function animate() {
             ctx.clearRect(0,0,canvas.width, canvas.height); 
             ctx.fillStyle = "#fff";
+            ctx.globalCompositeOperation = 'lighter';
             stars.forEach(s => { ctx.globalAlpha = s.op; ctx.fillRect(s.x, s.y, s.s, s.s); });
             shootingStars.forEach((ss, i) => {
                 ctx.strokeStyle = `rgba(214, 47, 127, ${ss.op})`; 
@@ -195,7 +189,8 @@
                 ss.x -= ss.speed; ss.y += ss.speed; ss.op -= 0.015;
                 if(ss.op <= 0) shootingStars.splice(i, 1);
             });
-            if(Math.random() < 0.04) createShootingStar();
+            const chance = (canvas.width < 640) ? 0.02 : 0.04;
+            if(Math.random() < chance) createShootingStar();
             requestAnimationFrame(animate);
         }
 
