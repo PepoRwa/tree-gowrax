@@ -2,11 +2,11 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>GRX // Tactical Link Hub</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Space+Mono&family=Rock+Salt&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Space+Mono&family=Rock+Salt&family=Poppins:wght@300;400&display=swap" rel="stylesheet">
     
     <script>
         tailwind.config = {
@@ -32,83 +32,86 @@
 
     <style>
         body {
-            background-color: #0D0E15;
-            color: #F0F2F5;
-            font-family: 'Poppins', sans-serif;
-            overflow-x: hidden;
+            background-color: #0D0E15; color: #F0F2F5; font-family: 'Poppins', sans-serif;
+            overflow-x: hidden; -webkit-tap-highlight-color: transparent;
         }
 
         /* =========================================
-           EFFET REFLET NACRÉ "MER"
+           BACKGROUND: SEA REFLECTIONS & LOFI GRAIN
            ========================================= */
         .sea-reflections { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; background: #0D0E15; }
         .sea-reflections::after {
-            content: ''; position: absolute; inset: 0; opacity: 0.04; z-index: 5;
+            content: ''; position: absolute; inset: 0; opacity: 0.05; z-index: 5;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
-        .wave { position: absolute; filter: blur(100px); border-radius: 50%; opacity: 0.2; animation: waveFloat 10s infinite alternate ease-in-out; }
-        .wave-quartz { background: #F7CAD0; width: 120vw; height: 20vh; top: -5%; left: -10%; }
-        .wave-ether { background: #A2D2FF; width: 100vw; height: 15vh; bottom: 10%; right: -10%; animation-delay: -4s; }
+        .wave { position: absolute; filter: blur(90px); border-radius: 50%; opacity: 0.15; animation: waveFloat 12s infinite alternate ease-in-out; }
+        .wave-quartz { background: #F7CAD0; width: 150vw; height: 30vh; top: -10%; left: -20%; }
+        .wave-ether { background: #A2D2FF; width: 120vw; height: 20vh; bottom: 5%; right: -20%; animation-delay: -5s; }
+        
+        /* Poussières d'étoiles flottantes */
+        .dust { position: absolute; background: #FFF; border-radius: 50%; opacity: 0; animation: floatUp 8s linear infinite; box-shadow: 0 0 8px #FFF; }
+        @keyframes floatUp {
+            0% { transform: translateY(100vh) scale(0); opacity: 0; }
+            20% { opacity: 0.6; }
+            80% { opacity: 0.6; }
+            100% { transform: translateY(-20vh) scale(1.5); opacity: 0; }
+        }
 
         @keyframes waveFloat {
-            0% { transform: translateY(0px) scaleX(1); opacity: 0.15; }
-            100% { transform: translateY(40px) scaleX(1.1); opacity: 0.3; }
+            0% { transform: translateY(0px) rotate(0deg) scaleX(1); opacity: 0.1; }
+            100% { transform: translateY(50px) rotate(5deg) scaleX(1.1); opacity: 0.25; }
         }
 
         /* =========================================
-           COMPOSANTS GLASSMORPHISM
+           GLASSMORPHISM & COMPONENTS
            ========================================= */
         .glass-panel {
-            background: rgba(26, 28, 46, 0.3);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(26, 28, 46, 0.4);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s, background 0.2s;
         }
 
-        .holo-circle {
-            width: 80px; height: 80px;
-            border-radius: 50%;
-            border: 1px solid rgba(162, 210, 255, 0.2);
-            overflow: hidden;
-            background: rgba(13, 14, 21, 0.6);
-            transition: all 0.4s ease;
-        }
-        .group:hover .holo-circle {
-            border-color: #A2D2FF;
-            box-shadow: 0 0 20px rgba(162, 210, 255, 0.3);
-            transform: translateY(-5px);
-        }
-
-        .btn-link {
-            padding: 14px 20px;
-            display: flex; align-items: center; justify-content: space-between;
-            border-radius: 16px;
-        }
-        .btn-link:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(162, 210, 255, 0.4);
-            transform: translateX(5px);
-        }
-
-        /* Banner Recrutement Nacrée */
-        .recruitment-banner {
-            background: linear-gradient(90deg, rgba(247,202,208,0.1), rgba(162,210,255,0.1));
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
+        .main-cta {
+            background: linear-gradient(135deg, rgba(162,210,255,0.1) 0%, rgba(177,133,219,0.1) 100%);
+            border: 1px solid rgba(162, 210, 255, 0.3);
             position: relative; overflow: hidden;
         }
-        .recruitment-banner::after {
-            content: ""; position: absolute; inset: 0;
+        .main-cta::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transform: translateX(-100%);
-            animation: shimmer 4s infinite;
+            transform: skewX(-20deg); animation: shine 6s infinite;
         }
-        @keyframes shimmer { 100% { transform: translateX(100%); } }
+        @keyframes shine { 0%, 70% { left: -100%; } 100% { left: 200%; } }
 
-        .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #4b5563; }
-        .is-live { background: #ff4d4d; box-shadow: 0 0 10px #ff4d4d; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+        .btn-link:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.08); }
+        @media (hover: hover) {
+            .btn-link:hover { transform: translateY(-3px); border-color: rgba(162, 210, 255, 0.4); background: rgba(255, 255, 255, 0.05); }
+        }
+
+        /* Streamer Avatars */
+        .holo-circle {
+            width: 70px; height: 70px; border-radius: 50%; padding: 2px;
+            background: linear-gradient(135deg, rgba(162,210,255,0.4), transparent);
+            transition: all 0.3s ease;
+        }
+        .holo-circle img { border-radius: 50%; background: #0D0E15; }
+
+        /* Scrollbar caching */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Animations d'entrée */
+        .stagger-1 { animation: slideUp 0.6s ease-out 0.1s both; }
+        .stagger-2 { animation: slideUp 0.6s ease-out 0.2s both; }
+        .stagger-3 { animation: slideUp 0.6s ease-out 0.3s both; }
+        .stagger-4 { animation: slideUp 0.6s ease-out 0.4s both; }
+        
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body class="antialiased">
@@ -116,79 +119,155 @@
     <div class="sea-reflections">
         <div class="wave wave-quartz"></div>
         <div class="wave wave-ether"></div>
+        <div id="dust-container"></div>
     </div>
 
-    <div class="relative z-10 flex flex-col items-center py-16 px-6 min-h-screen">
+    <div class="fixed top-0 left-0 w-full p-4 flex justify-between items-start z-50 pointer-events-none mix-blend-screen opacity-60">
+        <div class="font-techMono text-[9px] text-gowrax-ether uppercase tracking-widest leading-tight">
+            <span id="clock" class="font-bold text-white">00:00:00</span><br>
+            Moonlight Sea Phase
+        </div>
+        <div class="font-techMono text-[9px] text-right text-gowrax-quartz uppercase tracking-widest leading-tight">
+            GRX-SYS_ONLINE<br>
+            <span class="flex items-center justify-end gap-1 mt-0.5"><span class="w-1.5 h-1.5 bg-green-400 rounded-full animate-pulse"></span> SECURE</span>
+        </div>
+    </div>
+
+    <main class="relative z-10 flex flex-col items-center pt-20 pb-12 px-6 min-h-screen max-w-lg mx-auto">
         
-        <div class="text-center mb-12 animate-[fadeIn_1s_ease-out]">
-            <div class="w-24 h-24 mx-auto mb-6 relative">
-                <img src="/icons/logo-team-esport.png" alt="GRX" class="w-full h-full object-contain drop-shadow-[0_0_20px_rgba(162,210,255,0.3)]">
+        <div class="text-center mb-10 stagger-1">
+            <div class="w-28 h-28 mx-auto mb-4 relative">
+                <div class="absolute inset-0 bg-gowrax-ether/20 blur-2xl rounded-full"></div>
+                <img src="/icons/logo-team-esport.png" alt="GRX" class="relative w-full h-full object-contain drop-shadow-[0_0_15px_rgba(162,210,255,0.4)]">
             </div>
-            <p class="font-rockSalt text-gowrax-quartz text-lg -rotate-2 mb-2">Tactical Link Hub</p>
-            <h1 class="font-rajdhani text-xs tracking-[0.6em] text-gowrax-ether uppercase font-bold opacity-60">Gowrax Esport Unit</h1>
+            <h1 class="font-rajdhani text-2xl tracking-[0.2em] text-white uppercase font-bold">Team Gowrax</h1>
+            <p class="font-rockSalt text-gowrax-quartz text-xs -rotate-2 mt-1 opacity-80">Tactical Link Hub</p>
         </div>
 
-        <div class="recruitment-banner w-full max-w-sm p-4 mb-12 text-center backdrop-blur-md">
-            <p class="font-techMono text-[9px] text-gowrax-ether tracking-widest uppercase mb-1">Status: Open Recruitment</p>
-            <p class="font-rajdhani text-sm text-white font-semibold">Notre division CS recrute ! N'hésite pas à nous rejoindre.</p>
-        </div>
+        <a href="https://gowrax.me" class="w-full glass-panel main-cta rounded-2xl p-5 mb-8 flex items-center justify-between group stagger-2">
+            <div>
+                <p class="font-techMono text-[10px] text-gowrax-ether uppercase tracking-[0.3em] mb-1">Portail Principal</p>
+                <h2 class="font-rajdhani text-2xl font-bold tracking-wider text-white">GOWRAX.ME</h2>
+            </div>
+            <div class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center border border-white/20 group-hover:bg-white/20 transition-colors">
+                <svg class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </div>
+        </a>
 
-        <div class="flex gap-8 mb-16 overflow-x-auto max-w-full pb-4 no-scrollbar">
-            <a href="https://twitch.tv/ptitegow" target="_blank" class="flex flex-col items-center gap-3 group shrink-0">
-                <div class="holo-circle p-1">
-                    <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/4ead3e38-37d4-4ead-8e56-3ce235d7f6b0-profile_image-70x70.png" class="w-full h-full rounded-full grayscale group-hover:grayscale-0 transition-all duration-500">
+        <div class="w-full bg-gradient-to-r from-gowrax-void/40 via-gowrax-purple/20 to-gowrax-void/40 border border-white/5 rounded-xl p-3 mb-10 overflow-hidden backdrop-blur-sm stagger-2">
+            <div class="flex items-center gap-3">
+                <span class="font-techMono text-[9px] bg-gowrax-ether/20 text-gowrax-ether px-2 py-0.5 rounded border border-gowrax-ether/30 uppercase tracking-widest shrink-0">Recrutement</span>
+                <div class="overflow-hidden relative w-full">
+                    <p class="font-poppins text-xs text-gray-300 whitespace-nowrap animate-[marquee_15s_linear_infinite]">
+                        Notre division CS2 recrute des agents ! Rejoignez le Discord pour postuler. /// Opérations Valorant en cours. /// 
+                    </p>
                 </div>
-                <span class="font-techMono text-[10px] text-gowrax-quartz uppercase tracking-widest">Ptitegow</span>
-            </a>
-            <a href="https://twitch.tv/crazzynel" target="_blank" class="flex flex-col items-center gap-3 group shrink-0">
-                <div class="holo-circle p-1">
-                    <img src="https://static-cdn.jtvnw.net/jtv_user_pictures/06f74954-7154-4541-91c2-2df23c3be26e-profile_image-70x70.png" class="w-full h-full rounded-full grayscale group-hover:grayscale-0 transition-all duration-500">
+            </div>
+        </div>
+
+        <div class="w-full mb-10 stagger-3">
+            <h3 class="font-techMono text-[9px] text-gray-500 uppercase tracking-[0.3em] mb-4 text-center">/ Agents en direct</h3>
+            <div class="flex justify-center gap-6 overflow-x-auto no-scrollbar snap-x pb-2">
+                <a href="https://twitch.tv/ptitegow" target="_blank" class="flex flex-col items-center gap-2 snap-center shrink-0">
+                    <div class="holo-circle"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/4ead3e38-37d4-4ead-8e56-3ce235d7f6b0-profile_image-70x70.png" class="w-full h-full object-cover"></div>
+                    <span class="font-techMono text-[10px] text-gowrax-quartz uppercase tracking-widest">Ptitegow</span>
+                </a>
+                <a href="https://twitch.tv/crazzynel" target="_blank" class="flex flex-col items-center gap-2 snap-center shrink-0">
+                    <div class="holo-circle border-gowrax-ether shadow-[0_0_15px_rgba(162,210,255,0.3)]"><img src="https://static-cdn.jtvnw.net/jtv_user_pictures/06f74954-7154-4541-91c2-2df23c3be26e-profile_image-70x70.png" class="w-full h-full object-cover"></div>
+                    <span class="font-techMono text-[10px] text-gowrax-ether uppercase tracking-widest font-bold">Crazzynel</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="w-full flex flex-col gap-3 stagger-4">
+            
+            <a href="https://www.twitch.tv/team_gowrax" target="_blank" class="glass-panel btn-link rounded-xl p-4">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-gowrax-lavender" fill="currentColor" viewBox="0 0 24 24"><path d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z"/></svg>
+                    <span class="font-rajdhani text-lg uppercase tracking-wider font-bold">Twitch</span>
                 </div>
-                <span class="font-techMono text-[10px] text-gowrax-ether uppercase tracking-widest font-bold">Crazzynel</span>
+                <div class="flex items-center gap-2 bg-red-500/10 border border-red-500/20 px-2 py-1 rounded">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse"></span>
+                    <span class="font-techMono text-[9px] text-red-400 tracking-widest">OFFLINE</span>
+                </div>
+            </a>
+
+            <a href="https://www.x.com/gowrax_esport" target="_blank" class="glass-panel btn-link rounded-xl p-4">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.045 4.126H5.078z"/></svg>
+                    <span class="font-rajdhani text-lg uppercase tracking-wider">X (Twitter)</span>
+                </div>
+                <span class="font-techMono text-[9px] opacity-40 uppercase">Comms</span>
+            </a>
+
+            <a href="https://www.tiktok.com/@team_gowrax" target="_blank" class="glass-panel btn-link rounded-xl p-4">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-[#ff0050]" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.12-3.44-3.17-3.8-5.46-.4-2.51.33-5.17 2.05-7.01 1.75-1.92 4.41-2.9 6.94-2.48v4.05c-1.59-.11-3.23.48-4.28 1.71-.85.95-1.15 2.31-.96 3.58.18 1.19.98 2.22 2.06 2.69 1.19.5 2.61.42 3.73-.24 1.13-.64 1.83-1.83 1.9-3.12.1-2.31.05-4.63.07-6.94.02-3.25.01-6.5.01-9.75z"/></svg>
+                    <span class="font-rajdhani text-lg uppercase tracking-wider">TikTok</span>
+                </div>
+                <span class="font-techMono text-[9px] opacity-40 uppercase">Clips</span>
+            </a>
+
+            <a href="https://www.instagram.com/team_gowrax" target="_blank" class="glass-panel btn-link rounded-xl p-4">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-gowrax-neon" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    <span class="font-rajdhani text-lg uppercase tracking-wider">Instagram</span>
+                </div>
+                <span class="font-techMono text-[9px] opacity-40 uppercase">Life</span>
+            </a>
+
+            <a href="https://discord.gg/rTF6hpthvK" target="_blank" class="glass-panel btn-link rounded-xl p-4 mt-4 border-gowrax-gold/30" style="background: linear-gradient(90deg, rgba(233,196,106,0.05), transparent);">
+                <div class="flex items-center gap-4">
+                    <svg class="w-5 h-5 text-gowrax-gold" fill="currentColor" viewBox="0 0 24 24"><path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/></svg>
+                    <span class="font-rajdhani text-lg uppercase tracking-[0.2em] text-gowrax-gold font-bold">Quartier Général</span>
+                </div>
             </a>
         </div>
 
-        <div class="w-full max-w-sm space-y-4">
-            <a href="https://www.twitch.tv/team_gowrax" target="_blank" class="glass-panel btn-link group">
-                <span class="flex items-center gap-3">
-                    <div class="live-dot is-live"></div>
-                    <span class="font-rajdhani text-sm uppercase tracking-wider font-bold">Chaîne Twitch Officielle</span>
-                </span>
-                <span class="font-techMono text-[9px] text-gowrax-neon animate-pulse">LIVE</span>
-            </a>
-
-            <a href="https://www.tiktok.com/@team_gowrax" target="_blank" class="glass-panel btn-link group">
-                <span class="font-rajdhani text-sm uppercase tracking-wider">Archives Tiktok</span>
-                <span class="font-techMono text-[9px] opacity-40">Intelligence</span>
-            </a>
-
-            <a href="https://www.instagram.com/team_gowrax" target="_blank" class="glass-panel btn-link group">
-                <span class="font-rajdhani text-sm uppercase tracking-wider">Instagram Unit</span>
-                <span class="font-techMono text-[9px] opacity-40">Social</span>
-            </a>
-
-            <a href="https://www.x.com/gowrax_esport" target="_blank" class="glass-panel btn-link group">
-                <span class="font-rajdhani text-sm uppercase tracking-wider">X (Twitter) Unit</span>
-                <span class="font-techMono text-[9px] opacity-40">Connexion</span>
-            </a>
-
-            <a href="https://discord.gg/rTF6hpthvK" target="_blank" class="glass-panel btn-link group border-gowrax-gold/30 bg-gowrax-gold/5 mt-8">
-                <span class="font-rajdhani text-sm uppercase tracking-[0.2em] text-gowrax-gold font-bold">Quartier Général</span>
-                <svg class="w-4 h-4 text-gowrax-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            </a>
-        </div>
-
-        <footer class="mt-auto pt-16 pb-8 opacity-40 text-center">
-            <p class="font-techMono text-[8px] tracking-[0.5em] uppercase">
-                Gowrax Unit // Phase: Moonlit Sea // 2026
+        <footer class="mt-12 opacity-30 text-center">
+            <p class="font-techMono text-[7px] tracking-[0.5em] uppercase">
+                Gowrax Unit // 2026 // Access Granted
             </p>
         </footer>
-    </div>
+    </main>
 
     <style>
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
+        /* Animation du texte de recrutement */
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-150%); }
+        }
     </style>
+
+    <script>
+        // HORLOGE TEMPS RÉEL (Pour le mini dashboard)
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').textContent = now.toLocaleTimeString('fr-FR', { hour12: false });
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // GÉNÉRATEUR DE POUSSIÈRES D'ÉTOILES (Optimisé)
+        const dustContainer = document.getElementById('dust-container');
+        for (let i = 0; i < 20; i++) {
+            const dust = document.createElement('div');
+            dust.className = 'dust';
+            
+            // Randomisation de la taille, position, durée et délai
+            const size = Math.random() * 3 + 1;
+            const left = Math.random() * 100;
+            const duration = Math.random() * 10 + 5;
+            const delay = Math.random() * 10;
+            
+            dust.style.width = `${size}px`;
+            dust.style.height = `${size}px`;
+            dust.style.left = `${left}vw`;
+            dust.style.animationDuration = `${duration}s`;
+            dust.style.animationDelay = `${delay}s`;
+            
+            dustContainer.appendChild(dust);
+        }
+    </script>
 </body>
 </html>
